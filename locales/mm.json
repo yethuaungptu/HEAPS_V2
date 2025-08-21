@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "home": "ပင်မစာမျက်နှာ",
+    "dashboard": "ပင်မစာမျက်နှာ",
+    "university": "University",
+    "prediction": "ခန့်မှန်းချက်",
+    "askQuestion": "Ask Question",
+    "account": "အကောင့် ၀င်/အသစ်ထည့် ရန်",
+    "logout": "အကောင့်ထွက်ရန်",
+    "lang": "English",
+    "profile": "ပရိုဖိုင်",
+    "student": "ကျောင်းသား"
+  },
+  "create": "ထည့်မည်",
+  "list": "စာရင်း",
+  "update": "ပြင်ဆင်မည်",
+  "featured": "ရွေးချယ်ထားသော"
+}

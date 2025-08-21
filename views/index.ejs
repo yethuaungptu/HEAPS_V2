@@ -1,11 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html data-theme="winter">
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <title>Higher Eduction Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/aos.css" />
+    <link rel="stylesheet" href="/stylesheets/swiper-bundle.min.css" />
+    <script src="/javascripts/swiper-bundle.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <% include ./partial/navbar.ejs %>
+
+    <div class="aos-all">
+      <div class="swiper" data-aos="fade-up">
+        <!-- Additional required wrapper -->
+
+        <div class="swiper-wrapper">
+          <!-- Slides -->
+          <div class="swiper-slide">
+            <div class="w-full h-[30vh] lg:h-[80vh]">
+              <img src="/images/slider-1.jpg" class="w-full object-cover" />
+              <div
+                class="absolute top-1/2 left-5 lg:left-16 -translate-y-1/2 text-white space-y-4"
+              >
+                <h2 class="text-3xl lg:text-5xl font-bold drop-shadow-md">
+                  Resolution
+                </h2>
+                <p class="text-sm lg:text-lg max-w-md drop-shadow-md">
+                  Find resolution for your way
+                </p>
+                <a href="/resolution" class="btn btn-primary"
+                  >Explore Resolution</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="w-full h-[30vh] lg:h-[80vh]">
+              <img src="/images/slider-2.jpg" class="w-full object-cover" />
+              <div
+                class="absolute top-1/2 left-5 lg:left-16 -translate-y-1/2 text-white space-y-4"
+              >
+                <h2 class="text-3xl lg:text-5xl font-bold drop-shadow-md">
+                  Meditation
+                </h2>
+                <p class="text-sm lg:text-lg max-w-md drop-shadow-md">
+                  Quick meditation tips.
+                </p>
+                <a href="/meditate" class="btn btn-primary"
+                  >Explore Meditation</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="swiper-slide">
+            <div class="w-full h-[30vh] lg:h-[80vh]">
+              <img src="/images/slider-3.jpg" class="w-full object-cover" />
+              <div
+                class="absolute top-1/2 left-5 lg:left-16 -translate-y-1/2 text-white space-y-4"
+              >
+                <h2 class="text-3xl lg:text-5xl font-bold drop-shadow-md">
+                  Dhamma
+                </h2>
+                <p class="text-sm lg:text-lg max-w-md drop-shadow-md">
+                  Learn Dhamma Guide.
+                </p>
+                <a href="/gsp" class="btn btn-primary">Explore Dhamma Guide</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% include ./partial/footer.ejs %>
   </body>
+  <script src="/javascripts/aos.js"></script>
+  <script>
+    AOS.init({
+      mirror: true,
+    });
+    const swiper = new Swiper(".swiper", {
+      // Optional parameters
+      direction: "horizontal",
+      loop: true,
+      pagination: {
+        el: ".swiper-pagination",
+      },
+      autoplay: {
+        delay: 5000,
+      },
+    });
+  </script>
 </html>

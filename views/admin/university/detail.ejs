@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html data-theme="retro">
+  <head>
+    <title>Higher Eduction Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div id="root">
+      <div class="drawer lg:drawer-open">
+        <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col">
+          <div class="navbar sticky top-0 bg-base-100 z-10 shadow-md">
+            <div class="flex-1">
+              <label
+                for="left-sidebar-drawer"
+                class="btn btn-primary drawer-button lg:hidden"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  class="h-5 inline-block w-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  ></path>
+                </svg>
+              </label>
+              <h1 class="text-2xl font-semibold ml-2"></h1>
+            </div>
+          </div>
+          <main
+            class="flex-1 overflow-y-auto md:pt-4 pt-4 px-1 lg:px-6 bg-base-200"
+          >
+            <div class="max-w-6xl mx-auto p-6 space-y-6">
+              <h1 class="text-3xl font-bold mb-2"><%= university.name %></h1>
+              <% if (university.image) { %>
+              <img
+                src="<%= university.image %>"
+                alt="University Image"
+                class="w-full max-w-md mb-6 rounded-lg shadow mx-auto"
+              />
+              <% }else{ %>
+              <img
+                src="/images/slider-3-1.jpg"
+                alt="Default University Image"
+                class="w-full max-w-md mb-6 rounded-lg shadow mx-auto"
+              />
+              <%}%>
+              <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
+                <div class="space-y-4">
+                  <p><strong>Ranking:</strong> <%= university.ranking %></p>
+                  <p>
+                    <strong>Minimum Male Mark:</strong> <%=
+                    university.minMarkMale %>
+                  </p>
+                  <p>
+                    <strong>Minimum Female Mark:</strong> <%=
+                    university.minMarkFemale %>
+                  </p>
+                </div>
+                <div class="space-y-4">
+                  <p><strong>Region:</strong> <%= university.region %></p>
+                  <p>
+                    <strong>Students Acceptable:</strong> <%=
+                    university.limitCount %>
+                  </p>
+                  <p>
+                    <strong>Supported Categories:</strong>
+                    <% university.supportedCategories.forEach(function(category)
+                    { %>
+                    <span class="badge badge-primary mr-2"
+                      ><%= category %></span
+                    >
+                    <% }); %>
+                  </p>
+                </div>
+                <div class="space-y-4">
+                  <p>
+                    <strong>Website URL:</strong>
+                    <a
+                      href="<%= university.websiteUrl %>"
+                      target="_blank"
+                      class="text-blue-500 hover:underline"
+                      ><%= university.websiteUrl %></a
+                    >
+                  </p>
+                  <p>
+                    <strong>University Type:</strong>
+                    <%= university.category %>
+                  </p>
+                  <p>
+                    <strong>Address:</strong>
+                    <%= university.address %>
+                  </p>
+                </div>
+              </div>
+
+              <hr class="my-6" />
+              <div class="card-actions justify-end">
+                <a
+                  href="/admin/university/update/<%= university._id %>"
+                  class="btn btn-primary"
+                  >Update</a
+                >
+              </div>
+            </div>
+          </main>
+        </div>
+        <% include ../../partial/adminDrawer %>
+      </div>
+    </div>
+  </body>
+</html>

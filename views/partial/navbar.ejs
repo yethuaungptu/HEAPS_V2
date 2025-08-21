@@ -1,0 +1,80 @@
+<div class="navbar bg-primary shadow-sm">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <button tabindex="0" role="button" class="btn btn-ghost text-white lg:hidden lg:left-[-10%]">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h8m-8 6h16"
+          />
+        </svg>
+      </button>
+      <a href="/" class="btn btn-ghost text-xl text-white lg:hidden">HEAPS</a>
+      <ul
+        tabindex="0"
+        class="menu menu-sm dropdown-content text-white-500 bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+      >
+        <li><a href="/"><%= __('nav.home') %></a></li>
+        <li><a href="/university"><%= __('nav.university') %></a></li>
+        <li><a href="/prediction"><%= __('nav.prediction') %></a></li>
+        <li><a href="/askQuestion"><%= __('nav.askQuestion') %></a></li>
+        
+      <% if(locals.user){%>
+        <li><a href="/user"><%= __('nav.profile') %></a></li>
+        <!-- <li><a href="/quiz"><%= __('nav.quiz') %></a></li> -->
+      <%}%>
+        <li>
+          <a href="<%= locals.lang == 'en'? '/?lang=mm':'/?lang=en' %>">
+            <%= __('nav.lang') %>
+          </a>
+        </li>
+      </ul>
+      
+    </div>
+    <a href="/" class="btn btn-ghost btn-primary text-2xl hidden lg:flex text-white"
+        >Higher Eduction Access Prediction System
+      </a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal text-white px-1">
+      <li><a href="/"><%= __('nav.home') %></a></li>
+      <li><a href="/university"><%= __('nav.university') %></a></li>
+      <li><a href="/prediction"><%= __('nav.prediction') %></a></li>
+      <li><a href="/askQuestion"><%= __('nav.askQuestion') %></a></li>
+       
+      <% if(locals.user){%>
+        <li><a href="/user"><%= __('nav.profile') %></a></li>
+        <!-- <li><a href="/quiz"><%= __('nav.quiz') %></a></li> -->
+      <%}%>
+      <li>
+        <a href="<%= locals.lang == 'en'? '/?lang=mm':'/?lang=en' %>">
+          <%= __('nav.lang') %>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="navbar-end text-white">
+    <% if(locals.user){%>
+    <a
+      href="/logout"
+      class="btn btn-outline text-white btn-ghost btn-primary "
+      ><%= __('nav.logout') %></a
+    >
+    <%}else{%>
+    <a
+      href="/login"
+      class="btn btn-outline btn-ghost btn-primary text-white"
+      ><%= __('nav.account') %></a
+    >
+    <%}%>
+  </div>
+</div>
+</div>

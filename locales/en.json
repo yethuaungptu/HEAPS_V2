@@ -1,0 +1,18 @@
+{
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "university": "University",
+    "prediction": "Prediction",
+    "askQuestion": "Ask Question",
+    "account": "Login/Register",
+    "logout": "Logout",
+    "lang": "မြန်မာ",
+    "profile": "Profile",
+    "student": "Student"
+  },
+  "create": "Create",
+  "list": "List",
+  "update": "Update",
+  "featured": "Featured"
+}

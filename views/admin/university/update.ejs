@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html data-theme="retro">
+  <head>
+    <title>Higher Eduction Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div id="root">
+      <div class="drawer lg:drawer-open">
+        <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col">
+          <div class="navbar sticky top-0 bg-base-100 z-10 shadow-md">
+            <div class="flex-1">
+              <label
+                for="left-sidebar-drawer"
+                class="btn btn-primary drawer-button lg:hidden"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  class="h-5 inline-block w-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  ></path>
+                </svg>
+              </label>
+              <h1 class="text-2xl font-semibold ml-2"></h1>
+            </div>
+          </div>
+          <main class="flex-1 overflow-y-auto md:pt-4 pt-4 px-6 bg-base-200">
+            <div class="card w-full p-6 bg-base-100 shadow-xl mt-2">
+              <div class="text-xl font-semibold">University Update</div>
+              <div class="divider mt-2"></div>
+              <div class="h-full w-full pb-6 bg-base-100">
+                <form
+                  action="/admin/university/update"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <input
+                    type="hidden"
+                    name="id"
+                    value="<%= university._id %>"
+                  />
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="form-control w-full undefined -mb-7">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Name
+                        </span>
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Name"
+                        class="input input-bordered w-full validator"
+                        required
+                        minlength="3"
+                        value="<%= university.name %>"
+                        title="Only letters, numbers or dash"
+                      />
+                      <p class="validator-hint">
+                        Must be at least 3 characters
+                      </p>
+                    </div>
+                    <div class="form-control w-full undefined -mb-3">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Type of University
+                        </span>
+                      </label>
+                      <br />
+                      <select
+                        class="select validator w-full"
+                        name="category"
+                        required
+                      >
+                        <option value="University" <%= university.category == "University" ? "selected":"" %> >University</option>
+                      <option value="Computer University" <%= university.category == "Computer University" ? "selected":"" %>>
+                        Computer University
+                      </option>
+                      <option value="Technological University" <%= university.category == "Technological University" ? "selected":"" %>>
+                        Technological University
+                      </option>
+                      <option value="Medicine University" <%= university.category == "Medicine University" ? "selected":"" %>>
+                        Medicine University
+                      </option>
+                      <option value="Agricultural University" <%= university.category == "Agricultural University" ? "selected":"" %>>
+                        Agricultural University
+                      </option>
+                      <option value="University of Culture" <%= university.category == "University of Culture" ? "selected":"" %>>
+                        University of Culture
+                      </option>
+                      <option value="University of Traditional Medicine" <%= university.category == "University of Traditional Medicine" ? "selected":"" %>>
+                        University of Traditional Medicine
+                      </option>
+                      <option value="Institute of Economics" <%= university.category == "Institute of Economics" ? "selected":"" %>>
+                        Institute of Economics
+                      </option>
+                      <option value="Institute of Nursing" <%= university.category == "Institute of Nursing" ? "selected":"" %>>
+                        Institute of Nursing
+                      </option>
+                      <option value="Education College" <%= university.category == "Education College" ? "selected":"" %>>
+                        Education College
+                      </option>
+                      <option value="University of Foreign Languages" <%= university.category == "University of Foreign Languages" ? "selected":"" %>>
+                        University of Foreign Languages
+                      </option>
+                      </select>
+                      <p class="validator-hint">
+                        Type of University is required
+                      </p>
+                    </div>
+                    <div class="form-control w-full undefined -mb-7">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Address
+                        </span>
+                      </label>
+                      <input
+                        type="text"
+                        name="address"
+                        placeholder="University address"
+                        value="<%= university.address %>"
+                        class="input input-bordered w-full validator"
+                        required
+                        title="Only letters"
+                      />
+                      <p class="validator-hint">Address is required</p>
+                    </div>
+
+                    <div class="form-control w-full undefined -mb-3">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Ranking
+                        </span>
+                      </label>
+                      <br />
+                      <select
+                        class="select validator w-full"
+                        name="ranking"
+                        required
+                      >
+                        <option value="A" <%= university.ranking == "A" ? "selected":"" %>>A</option>
+                        <option value="B" <%= university.ranking == "B" ? "selected":"" %>>B</option>
+                        <option value="C" <%= university.ranking == "C" ? "selected":"" %>>C</option>
+                        <option value="D" <%= university.ranking == "D" ? "selected":"" %>>D</option>
+                      </select>
+                      <p class="validator-hint">Ranking is required</p>
+                    </div>
+                    <div class="form-control w-full undefined -mb-3">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Minimum Mark For Male
+                        </span>
+                      </label>
+                      <br />
+                      <input
+                        type="number"
+                        class="w-full input validator"
+                        name="minMarkMale"
+                        min="1"
+                        value="<%= university.minMarkMale %>"
+                        max="600"
+                        required
+                        placeholder="Score between 1 to 600"
+                        title=""
+                      />
+                      <p class="validator-hint">Score between 1 to 600</p>
+                    </div>
+                    <div class="form-control w-full undefined -mb-3">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Minimum Mark For Female
+                        </span>
+                      </label>
+                      <br />
+                      <input
+                        type="number"
+                        class="w-full input validator"
+                        name="minMarkFemale"
+                        min="1"
+                        value="<%= university.minMarkFemale %>"
+                        max="600"
+                        required
+                        placeholder="Score between 1 to 600"
+                        title=""
+                      />
+                      <p class="validator-hint">Score between 1 to 600</p>
+                    </div>
+                    <div class="form-control w-full undefined -mb-3">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Maximum Students acceptable
+                        </span>
+                      </label>
+                      <br />
+                      <input
+                        type="number"
+                        class="w-full input validator"
+                        name="limitCount"
+                        min="1"
+                        value="<%= university.limitCount %>"
+                        required
+                        placeholder="Minimum 1"
+                        title=""
+                      />
+                      <p class="validator-hint">Minimum 1</p>
+                    </div>
+                    <div class="form-control w-full undefined -mb-3">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Acceptable Group
+                        </span>
+                      </label>
+                      <br />
+                      <input type="hidden" id="catVal" value="<%= university.supportedCategories.join(',') %>" />
+                      <select
+                        class="select validator w-full h-[7vh]"
+                        name="supportedCategories"
+                        id="supportedCategories"
+                        required
+                        multiple
+                      >
+                        <option value="A">Group A(M,E,M,P,C,B)</option>
+                        <option value="B">Group B(M,E,M,P,C,E)</option>
+                        <option value="C">Group C(M,E,M,H,G,E)</option>
+                      </select>
+                      <p class="validator-hint">Category is required</p>
+                    </div>
+                    <div class="form-control w-full undefined -mb-3">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Region
+                        </span>
+                      </label>
+                      <br />
+                      <select
+                        class="select validator w-full"
+                        name="region"
+                        required
+                      >
+                        <option value="Ayeyarwady" <%= university.region == "Ayeyarwady" ? "selected":"" %>>Ayeyarwady</option>
+                        <option value="Bago" <%= university.region == "Bago" ? "selected":"" %>>Bago</option>
+                        <option value="Chin" <%= university.region == "Chin" ? "selected":"" %>>Chin</option>
+                        <option value="Kachin" <%= university.region == "Kachin" ? "selected":"" %>>Kachin</option>
+                        <option value="Kayah" <%= university.region == "Kayah" ? "selected":"" %>>Kayah</option>
+                        <option value="Kayin" <%= university.region == "Kayin" ? "selected":"" %>>Kayin</option>
+                        <option value="Magway" <%= university.region == "Magway" ? "selected":"" %>>Magway</option>
+                        <option value="Mandalay" <%= university.region == "Mandalay" ? "selected":"" %>>Mandalay</option>
+                        <option value="Mon" <%= university.region == "Mon" ? "selected":"" %>>Mon</option>
+                        <option value="Rakhine" <%= university.region == "Rakhine" ? "selected":"" %>>Rakhine</option>
+                        <option value="Sagaing" <%= university.region == "Sagaing" ? "selected":"" %>>Sagaing</option>
+                        <option value="Shan" <%= university.region == "Shan" ? "selected":"" %>>Shan</option>
+                        <option value="Tanintharyi" <%= university.region == "Tanintharyi" ? "selected":"" %>>Tanintharyi</option>
+                        <option value="Yangon" <%= university.region == "Yangon" ? "selected":"" %>>Yangon</option>
+                      </select>
+                      <p class="validator-hint">Ranking is required</p>
+                    </div>
+                    <div class="form-control w-full undefined -mb-3">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Website Link
+                        </span>
+                      </label>
+                      <br />
+                      <input
+                        type="url"
+                        class="input validator w-full"
+                        required
+                        name="websiteUrl"
+                        placeholder="https://"
+                        value="<%= university.websiteUrl %>"
+                        pattern="^(https?://)?([a-zA-Z0-9]([a-zA-Z0-9-].*[a-zA-Z0-9])?.)+[a-zA-Z].*$"
+                        title="Must be valid URL"
+                      />
+                      <p class="validator-hint">Must be valid URL</p>
+                    </div>
+                    <div class="form-control w-full undefined">
+                      <label class="label">
+                        <span class="label-text text-base-content undefined">
+                          Image
+                        </span>
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        name="image"
+                        placeholder="Estimated Savings"
+                        class="file-input input-bordered w-full"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="mt-16">
+                    <button type="submit" class="btn btn-primary float-right">
+                      Update
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="h-16"></div>
+          </main>
+        </div>
+        <% include ../../partial/adminDrawer %>
+      </div>
+    </div>
+  </body>
+  <script src="/javascripts/jquery-3.7.1.min.js"></script>
+  <script>
+    $(function () {
+      $("#supportedCategories").val($("#catVal").val().split(","));
+    });
+  </script>
+</html>

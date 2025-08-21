@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html data-theme="retro">
+  <head>
+    <title>Higher Eduction Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div id="root">
+      <div class="drawer lg:drawer-open">
+        <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col">
+          <div class="navbar sticky top-0 bg-base-100 z-10 shadow-md">
+            <div class="flex-1">
+              <label
+                for="left-sidebar-drawer"
+                class="btn btn-primary drawer-button lg:hidden"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  class="h-5 inline-block w-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  ></path>
+                </svg>
+              </label>
+              <h1 class="text-2xl font-semibold ml-2"></h1>
+            </div>
+          </div>
+          <main class="flex-1 overflow-y-auto md:pt-4 pt-4 px-6 bg-base-200">
+            <div class="hero min-h-screen bg-base-200">
+              <div class="hero-content text-center">
+                <div class="max-w-lg">
+                  <div class="card bg-base-100 shadow-xl mb-6">
+                    <div class="card-body">
+                      <h2 class="card-title justify-center">
+                        Upload Student Data (CSV)
+                      </h2>
+                      <form
+                        id="csvForm"
+                        enctype="multipart/form-data"
+                        class="space-y-4"
+                      >
+                        <input
+                          type="file"
+                          id="csvFile"
+                          name="csvFile"
+                          accept=".csv"
+                          class="file-input file-input-bordered w-full"
+                        />
+                        <button type="submit" class="btn btn-primary w-full">
+                          Upload CSV
+                        </button>
+                      </form>
+                      <div id="uploadMessage" class="mt-4"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="h-16"></div>
+          </main>
+        </div>
+        <% include ../../partial/adminDrawer %>
+      </div>
+    </div>
+  </body>
+  <script>
+    document.getElementById("csvForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      const fileInput = document.getElementById("csvFile");
+      const messageDiv = document.getElementById("uploadMessage");
+
+      if (!fileInput.files[0]) {
+        messageDiv.innerHTML =
+          '<div class="alert alert-error">Please select a CSV file</div>';
+        return;
+      }
+
+      formData.append("csvFile", fileInput.files[0]);
+      messageDiv.innerHTML =
+        '<div class="loading loading-spinner loading-md"></div>';
+
+      try {
+        const response = await fetch("/admin/student/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          messageDiv.innerHTML = `<div class="alert alert-success">${result.message}</div>`;
+          fileInput.value = "";
+        } else {
+          messageDiv.innerHTML = `<div class="alert alert-error">${result.message}</div>`;
+        }
+      } catch (error) {
+        messageDiv.innerHTML =
+          '<div class="alert alert-error">Upload failed. Please try again.</div>';
+      }
+    });
+  </script>
+</html>

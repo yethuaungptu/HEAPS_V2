@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html data-theme="winter">
+  <head>
+    <title>Higher Eduction Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <% include ./partial/navbar.ejs %>
+
+    <div class="container mx-auto p-6">
+      <h1 class="text-4xl font-bold text-center mb-8">
+        University Admission Prediction
+      </h1>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Search Form -->
+        <div class="card bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">Enter Student Details</h2>
+            <form id="predictionForm" class="space-y-4">
+              <input
+                type="text"
+                id="regionalCode"
+                placeholder="Regional Code(အကက)"
+                class="input input-bordered w-full"
+                required
+              />
+
+              <input
+                type="text"
+                id="rollNo"
+                placeholder="Roll Number"
+                class="input input-bordered w-full"
+                required
+              />
+
+              <button type="submit" class="btn btn-primary w-full">
+                Get Prediction
+              </button>
+            </form>
+            <div id="searchMessage" class="mt-4"></div>
+          </div>
+        </div>
+
+        <!-- Student Info -->
+        <div
+          class="card bg-base-100 shadow-xl"
+          id="studentInfo"
+          style="display: none"
+        >
+          <div class="card-body">
+            <h2 class="card-title text-2xl mb-4">Student Information</h2>
+            <div id="studentDetails"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prediction Results -->
+      <div
+        class="card bg-base-100 shadow-xl mt-8"
+        id="predictionResults"
+        style="display: none"
+      >
+        <div class="card-body">
+          <h2 class="card-title text-2xl mb-4">
+            University Admission Predictions
+          </h2>
+          <div id="predictionsTable"></div>
+        </div>
+      </div>
+    </div>
+    <% include ./partial/footer.ejs %>
+  </body>
+  <script>
+    document
+      .getElementById("predictionForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const regionalCode = document.getElementById("regionalCode").value;
+        const rollNo = document.getElementById("rollNo").value;
+        const messageDiv = document.getElementById("searchMessage");
+
+        messageDiv.innerHTML =
+          '<div class="loading loading-spinner loading-md"></div>';
+
+        try {
+          const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ regionalCode, rollNo }),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            displayStudentInfo(result.student);
+            displayPredictions(result.predictions);
+            messageDiv.innerHTML =
+              '<div class="alert alert-success">Prediction generated successfully!</div>';
+          } else {
+            messageDiv.innerHTML = `<div class="alert alert-error">${result.message}</div>`;
+            document.getElementById("studentInfo").style.display = "none";
+            document.getElementById("predictionResults").style.display = "none";
+          }
+        } catch (error) {
+          messageDiv.innerHTML =
+            '<div class="alert alert-error">Prediction failed. Please try again.</div>';
+        }
+      });
+
+    function displayStudentInfo(student) {
+      const studentDetails = document.getElementById("studentDetails");
+      studentDetails.innerHTML = `
+                <div class="space-y-2">
+                    <p><span class="font-semibold">Name:</span> ${
+                      student.name
+                    }</p>
+                    <p><span class="font-semibold">Regional Code:</span> ${
+                      student.regionalCode
+                    }</p>
+                    <p><span class="font-semibold">Roll Number:</span> ${
+                      student.rollNo
+                    }</p>
+                    <p><span class="font-semibold">Gender:</span> ${
+                      student.gender
+                    }</p>
+                    <p><span class="font-semibold">ဘာသာတွဲ:</span> ${
+                      student.category == "A"
+                        ? "သိပ္ပံတွဲ"
+                        : student.category == "B"
+                        ? "ဝိပ္ပံတွဲ"
+                        : "ဝိဇ္ဇာတွဲ"
+                    }</p>
+                    <p><span class="font-semibold">Total Mark:</span> ${
+                      student.totalMark
+                    }</p>
+                    <p><span class="font-semibold">Status:</span> 
+                        <span class="badge ${
+                          student.status === "pass"
+                            ? "badge-success"
+                            : "badge-error"
+                        }">
+                            ${student.status.toUpperCase()}
+                        </span>
+                    </p>
+                    <p><span class="font-semibold">Academic Year:</span> ${
+                      student.academicYear
+                    }</p>
+                </div>
+            `;
+      document.getElementById("studentInfo").style.display = "block";
+    }
+
+    function displayPredictions(predictions) {
+      const predictionsTable = document.getElementById("predictionsTable");
+
+      if (predictions.length === 0) {
+        predictionsTable.innerHTML =
+          '<div class="alert alert-warning">No universities match your criteria.</div>';
+      } else {
+        let tableHTML = `
+                    <div class="overflow-x-auto">
+                        <table class="table w-full">
+                            <thead>
+                                <tr>
+                                    <th>University Name</th>
+                                    <th>Address</th>
+                                    <th>Admission Chance</th>
+                                    <th>Student Limit</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+
+        predictions.forEach((pred) => {
+          const university = pred.university;
+          const percentage = pred.percentage;
+          const badgeClass =
+            percentage >= 75
+              ? "badge-success"
+              : percentage >= 50
+              ? "badge-warning"
+              : "badge-error";
+
+          tableHTML += `
+                        <tr>
+                            <td class="font-semibold">${university.name}</td>
+                            <td class="text-sm">${university.address}</td>
+                            <td>
+                                <span class="badge ${badgeClass}">${percentage}%</span>
+                            </td>
+                            <td>${university.limitCount}</td>
+                            <td><a href="/university/${university._id}" class="btn btn-primary">See More</a></td>
+                        </tr>
+                    `;
+        });
+
+        tableHTML += "</tbody></table></div>";
+        predictionsTable.innerHTML = tableHTML;
+      }
+
+      document.getElementById("predictionResults").style.display = "block";
+    }
+  </script>
+</html>
