@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-theme="retro">
   <head>
-    <title>Higher Eduction Access Prediction System</title>
+    <title>Higher Education Access Prediction System</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,8 +37,174 @@
             </div>
           </div>
           <main class="flex-1 overflow-y-auto md:pt-4 pt-4 px-6 bg-base-200">
-            <h1>Hello</h1>
-            <div class="h-16"></div>
+            <section class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <!-- Students -->
+              <div class="stat bg-base-100 rounded-2xl shadow">
+                <div class="stat-figure text-primary">
+                  <!-- user-group icon -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M16 11c1.657 0 3-1.79 3-4s-1.343-4-3-4-3 1.79-3 4 1.343 4 3 4zM8 11c1.657 0 3-1.79 3-4S9.657 3 8 3 5 4.79 5 7s1.343 4 3 4zM8 13c-3.314 0-6 2.239-6 5v1h8.054a6.969 6.969 0 0 1-.884-3.428C9.17 14.072 10.414 13 12 13h-4zM16 13c-3.314 0-6 2.239-6 5v1h12v-1c0-2.761-2.686-5-6-5z"
+                    />
+                  </svg>
+                </div>
+                <div class="stat-title">Students</div>
+                <div class="stat-value text-primary" id="studentCount">
+                  <%= studentCount %>
+                </div>
+                <div class="stat-desc">Total Student</div>
+              </div>
+
+              <!-- Universities -->
+              <div class="stat bg-base-100 rounded-2xl shadow">
+                <div class="stat-figure text-warning">
+                  <!-- academic-cap icon -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M12 3 1 8l11 5 9-4.091V17h2V9L12 3z" />
+                    <path
+                      d="M7 12.5V17c0 1.657 2.91 3 5 3s5-1.343 5-3v-4.5l-5 2.273-5-2.273z"
+                    />
+                  </svg>
+                </div>
+                <div class="stat-title">Universities</div>
+                <div class="stat-value text-warning" id="universityCount">
+                  <%= universityCount %>
+                </div>
+                <div class="stat-desc">Total University</div>
+              </div>
+
+              <!-- Tickets -->
+              <div class="stat bg-base-100 rounded-2xl shadow">
+                <div class="stat-figure text-info">
+                  <!-- ticket icon -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M3 7a2 2 0 0 1 2-2h5v2a2 2 0 1 0 4 0V5h5a2 2 0 0 1 2 2v2.5a1.5 1.5 0 1 1 0 3V15a2 2 0 0 1-2 2h-5v-2a2 2 0 1 0-4 0v2H5a2 2 0 0 1-2-2V12.5a1.5 1.5 0 1 1 0-3V7z"
+                    />
+                  </svg>
+                </div>
+                <div class="stat-title">Tickets</div>
+                <div class="stat-value text-info" id="ticketCount">
+                  <%= ticketCount %>
+                </div>
+                <div class="stat-desc">Open & pending</div>
+              </div>
+
+              <!-- Feedback -->
+              <div class="stat bg-base-100 rounded-2xl shadow">
+                <div class="stat-figure text-success">
+                  <!-- chat-bubble icon -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-8 w-8"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path
+                      d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"
+                    />
+                  </svg>
+                </div>
+                <div class="stat-title">Feedback</div>
+                <div class="stat-value text-success" id="feedbackCount">
+                  <%= feedbackCount %>
+                </div>
+                <div class="stat-desc">Feedback from user</div>
+              </div>
+            </section>
+
+            <!-- Quick actions / table placeholder -->
+            <section class="mt-6 grid gap-6 lg:grid-cols-3">
+              <div class="card bg-base-100 shadow lg:col-span-2">
+                <div class="card-body">
+                  <h2 class="card-title">Recent Tickets</h2>
+                  <div class="overflow-x-auto">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Title</th>
+                          <th>Status</th>
+                          <th>Priority</th>
+                          <th>Updated</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% for(var i = 0; i < recentTicket.length;i++){%>
+                        <tr>
+                          <th><%= i+1 %></th>
+                          <td><%= recentTicket[i].title %></td>
+                          <td>
+                            <span
+                              class="badge <%= recentTicket[i].status == 'open' ? 'badge-primary':'badge-success' %>"
+                              ><%= recentTicket[i].status %></span
+                            >
+                          </td>
+                          <td>
+                            <span
+                              class="badge <%= recentTicket[i].priority == 'high' ? 'badge-error': recentTicket[i].priority == 'medium' ? 'badge-info' : '' %>"
+                              ><%= recentTicket[i].priority %></span
+                            >
+                          </td>
+                          <td>
+                            <%= new
+                            Date(recentTicket[i].updatedAt).toLocaleDateString()
+                            %>
+                          </td>
+                        </tr>
+                        <%}%>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="card-actions justify-end">
+                    <a
+                      href="/admin/ticket"
+                      class="btn btn-outline btn-primary btn-sm"
+                    >
+                      View all
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card bg-base-100 shadow">
+                <div class="card-body">
+                  <h2 class="card-title">Quick Actions</h2>
+                  <div class="grid gap-2">
+                    <a
+                      href="/admin/student/create"
+                      class="btn btn-primary btn-block"
+                    >
+                      Insert Student
+                    </a>
+                    <a
+                      href="/admin/university"
+                      class="btn btn-secondary btn-block"
+                    >
+                      Manage Universities
+                    </a>
+                    <a href="/admin/feedback" class="btn btn-accent btn-block">
+                      Review Feedback
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
           </main>
         </div>
         <% include ../partial/adminDrawer %>

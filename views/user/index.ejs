@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html data-theme="winter">
+  <head>
+    <title>Higher Education Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/aos.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <% include ../partial/navbar.ejs %>
+    <!-- <div class="aos-all"> -->
+    <div class="text-3xl text-center mt-3 text-primary">My Profile</div>
+    <div class="container mx-auto px-4 py-6">
+      <!-- Profile Card -->
+      <div class="card bg-base-100 shadow-xl border border-gray-200">
+        <div class="card-body">
+          <div
+            class="flex flex-col md:flex-row items-center md:items-start gap-6"
+          >
+            <!-- Avatar -->
+            <div class="avatar">
+              <div
+                class="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
+              >
+                <img
+                  src="https://avatar.iran.liara.run/public"
+                  alt="User Avatar"
+                />
+              </div>
+            </div>
+
+            <!-- User Info -->
+            <div class="flex-1">
+              <h2 class="text-2xl font-bold"><%= user.name %></h2>
+              <p class="text-gray-500">Email: <%= user.email %></p>
+              <!-- <p class="text-gray-500">Score: <%= user.score %></p> -->
+            </div>
+            <!-- name of each tab group should be unique -->
+          </div>
+          <div class="tabs tabs-lift mt-4">
+            <input
+              type="radio"
+              name="my_tabs_3"
+              class="tab"
+              aria-label="Open Ticket"
+              checked="checked"
+            />
+            <div class="tab-content bg-base-100 border-base-300 p-6">
+              <% if(ticketNotSolved.length === 0){ %>
+              <div class="text-center text-gray-500">
+                No open or pending tickets.
+              </div>
+              <% } %> <% for(var i = 0; i < ticketNotSolved.length; i++){%>
+              <div class="card card-side bg-base-100 shadow-xl card-sm">
+                <div class="card-body">
+                  <h2 class="card-title"><%= ticketNotSolved[i].title %></h2>
+                  <p class="line-clamp-2 text-gray-600">
+                    <%= ticketNotSolved[i].question %>
+                  </p>
+                  <div class="flex gap-2 mt-2">
+                    <span class="badge badge-primary"
+                      ><%= ticketNotSolved[i].status %></span
+                    >
+                    <span class="badge badge-error"
+                      ><%= ticketNotSolved[i].priority %> Priority</span
+                    >
+                  </div>
+                  <div class="card-actions justify-end">
+                    <a
+                      href="/user/ticket/<%= ticketNotSolved[i]._id %>"
+                      class="btn btn-sm btn-outline btn-primary"
+                    >
+                      View
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <%}%>
+            </div>
+
+            <input
+              type="radio"
+              name="my_tabs_3"
+              class="tab"
+              aria-label="Close Ticket"
+            />
+            <div class="tab-content bg-base-100 border-base-300 p-6">
+              <% if(ticketSolved.length === 0){ %>
+              <div class="text-center text-gray-500">No solved tickets.</div>
+              <% } %> <% for(var i = 0; i < ticketSolved.length; i++){%>
+              <div class="card card-side bg-base-100 shadow-xl card-sm">
+                <div class="card-body">
+                  <h2 class="card-title"><%= ticketSolved[i].title %></h2>
+                  <p class="line-clamp-2 text-gray-600">
+                    <%= ticketSolved[i].question %>
+                  </p>
+                  <div class="flex gap-2 mt-2">
+                    <span class="badge badge-primary"
+                      ><%= ticketSolved[i].status %></span
+                    >
+                    <span class="badge badge-error"
+                      ><%= ticketSolved[i].priority %> Priority</span
+                    >
+                  </div>
+                  <div class="card-actions justify-end">
+                    <a
+                      href="/user/ticket/<%= ticketSolved[i]._id %>"
+                      class="btn btn-sm btn-outline btn-primary"
+                    >
+                      View
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <%}%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- </div> -->
+    <% include ../partial/footer.ejs %>
+  </body>
+  <script src="/javascripts/aos.js"></script>
+  <script>
+    AOS.init({
+      mirror: true,
+    });
+  </script>
+</html>

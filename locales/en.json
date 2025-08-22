@@ -4,12 +4,13 @@
     "dashboard": "Dashboard",
     "university": "University",
     "prediction": "Prediction",
-    "askQuestion": "Ask Question",
+    "ticket": "Question Ticket",
     "account": "Login/Register",
     "logout": "Logout",
     "lang": "မြန်မာ",
     "profile": "Profile",
-    "student": "Student"
+    "student": "Student",
+    "feedback": "Feedback"
   },
   "create": "Create",
   "list": "List",

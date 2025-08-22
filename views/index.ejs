@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-theme="winter">
   <head>
-    <title>Higher Eduction Access Prediction System</title>
+    <title>Higher Education Access Prediction System</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
     <link rel="stylesheet" href="/stylesheets/aos.css" />
     <link rel="stylesheet" href="/stylesheets/swiper-bundle.min.css" />
@@ -20,19 +20,21 @@
           <!-- Slides -->
           <div class="swiper-slide">
             <div class="w-full h-[30vh] lg:h-[80vh]">
-              <img src="/images/slider-1.jpg" class="w-full object-cover" />
+              <img src="/images/slider-1-2.jpg" class="w-full object-cover" />
               <div
                 class="absolute top-1/2 left-5 lg:left-16 -translate-y-1/2 text-white space-y-4"
               >
                 <h2 class="text-3xl lg:text-5xl font-bold drop-shadow-md">
-                  Resolution
+                  Higher Education Access Prediction System
                 </h2>
                 <p class="text-sm lg:text-lg max-w-md drop-shadow-md">
-                  Find resolution for your way
+                  This future university will help your way
                 </p>
-                <a href="/resolution" class="btn btn-primary"
-                  >Explore Resolution</a
+                <%if(locals.user){%>
+                <a href="/university" class="btn btn-primary">
+                  University List</a
                 >
+                <%}%>
               </div>
             </div>
           </div>
@@ -43,13 +45,13 @@
                 class="absolute top-1/2 left-5 lg:left-16 -translate-y-1/2 text-white space-y-4"
               >
                 <h2 class="text-3xl lg:text-5xl font-bold drop-shadow-md">
-                  Meditation
+                  Question Tickets
                 </h2>
                 <p class="text-sm lg:text-lg max-w-md drop-shadow-md">
-                  Quick meditation tips.
+                  Ask your question to admin and get the answer.
                 </p>
-                <a href="/meditate" class="btn btn-primary"
-                  >Explore Meditation</a
+                <a href="/user/ticket/create" class="btn btn-primary"
+                  >Create Ticket</a
                 >
               </div>
             </div>
@@ -61,12 +63,18 @@
                 class="absolute top-1/2 left-5 lg:left-16 -translate-y-1/2 text-white space-y-4"
               >
                 <h2 class="text-3xl lg:text-5xl font-bold drop-shadow-md">
-                  Dhamma
+                  Result With ML Prediction
                 </h2>
-                <p class="text-sm lg:text-lg max-w-md drop-shadow-md">
-                  Learn Dhamma Guide.
+                <p
+                  class="text-sm lg:text-lg max-w-md drop-shadow-md text-green-600"
+                >
+                  Check your university admission prediction with our ML model.
                 </p>
-                <a href="/gsp" class="btn btn-primary">Explore Dhamma Guide</a>
+                <%if(locals.user){%>
+                <a href="/prediction" class="btn btn-primary"
+                  >Explore Prediction</a
+                >
+                <%}%>
               </div>
             </div>
           </div>

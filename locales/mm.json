@@ -2,14 +2,15 @@
   "nav": {
     "home": "ပင်မစာမျက်နှာ",
     "dashboard": "ပင်မစာမျက်နှာ",
-    "university": "University",
+    "university": "တက္ကသိုလ်",
     "prediction": "ခန့်မှန်းချက်",
-    "askQuestion": "Ask Question",
+    "ticket": "မေးခွန်းလက်မှတ်",
     "account": "အကောင့် ၀င်/အသစ်ထည့် ရန်",
     "logout": "အကောင့်ထွက်ရန်",
     "lang": "English",
     "profile": "ပရိုဖိုင်",
-    "student": "ကျောင်းသား"
+    "student": "ကျောင်းသား",
+    "feedback": "အကြံပြုချက်"
   },
   "create": "ထည့်မည်",
   "list": "စာရင်း",

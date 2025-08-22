@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html data-theme="retro">
+  <head>
+    <title>Higher Education Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div id="root">
+      <div class="drawer lg:drawer-open">
+        <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col">
+          <div class="navbar sticky top-0 bg-base-100 z-10 shadow-md">
+            <div class="flex-1">
+              <label
+                for="left-sidebar-drawer"
+                class="btn btn-primary drawer-button lg:hidden"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  class="h-5 inline-block w-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  ></path>
+                </svg>
+              </label>
+              <h1 class="text-2xl font-semibold ml-2"></h1>
+            </div>
+          </div>
+          <main class="flex-1 overflow-y-auto md:pt-4 pt-4 px-6 bg-base-200">
+            <div class="max-w-4xl mx-auto">
+              <!-- Ticket Header -->
+              <div class="card bg-base-100 shadow-xl mb-6">
+                <div class="card-body">
+                  <h2 class="card-title text-2xl"><%= ticket.title %></h2>
+                  <p class="text-gray-600"><%= ticket.question %></p>
+                  <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
+                    <span class="badge badge-primary"
+                      ><%= ticket.status %></span
+                    >
+                    <span class="badge badge-error"
+                      ><%= ticket.priority %> Priority</span
+                    >
+                    <span class="badge badge-info"
+                      >Asked by: <%= ticket.author.name %></span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Conversation Panel -->
+              <div class="card bg-base-100 shadow-xl mb-6">
+                <div class="card-body">
+                  <h3 class="text-lg font-semibold mb-4">Conversation</h3>
+
+                  <div class="space-y-4 max-h-96 overflow-y-auto pr-2">
+                    <% for (var i = 0; i < ticket.answers.length; i++) { %> <%
+                    if (ticket.answers[i].isAuthor ) { %>
+                    <!-- User Message -->
+                    <div class="chat chat-start">
+                      <div class="chat-header">
+                        <%= ticket.author.name %>
+                        <time class="text-xs opacity-50"
+                          ><%= ticket.answers[i].createdAt %></time
+                        >
+                      </div>
+                      <div class="chat-bubble chat-bubble-primary">
+                        <%= ticket.answers[i].message %>
+                      </div>
+                    </div>
+                    <% } else { %>
+                    <!-- Admin Answer -->
+                    <div class="chat chat-end">
+                      <div class="chat-header">
+                        Admin
+                        <time class="text-xs opacity-50"
+                          ><%= ticket.answers[i].createdAt %></time
+                        >
+                      </div>
+                      <div class="chat-bubble chat-bubble-accent">
+                        <%= ticket.answers[i].message %>
+                      </div>
+                    </div>
+                    <%}%> <%}%>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Message Input Box -->
+              <div class="card bg-base-100 shadow-xl mb-3">
+                <div class="card-body">
+                  <h3 class="text-lg font-semibold mb-2">Send a Message</h3>
+                  <div class="flex gap-2">
+                    <input
+                      type="text"
+                      id="messageInput"
+                      placeholder="Type your message..."
+                      class="input input-bordered flex-1"
+                    />
+                    <button class="btn btn-primary" id="btnSend">Send</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+        <% include ../../partial/adminDrawer %>
+      </div>
+    </div>
+  </body>
+  <script src="/javascripts/jquery-3.7.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#btnSend").click(function () {
+        const message = $("#messageInput").val();
+        if (message.trim() === "") {
+          alert("Please enter a message.");
+          return;
+        }
+        // Here you would typically send the message to the server
+        $.ajax({
+          url: "/admin/ticket/sendMessage", // Adjust the URL as needed
+          method: "POST",
+          data: {
+            ticketId: "<%= ticket._id %>", // Pass the ticket ID
+            message: message,
+          },
+          success: function (response) {
+            // Handle success response
+            if (response.status !== "success") {
+              alert("Failed to send message: " + response.message);
+              return;
+            }
+            location.reload(); // Reload to show the new message
+            console.log("Message sent successfully:", response);
+            // Optionally, you can append the new message to the chat
+          },
+        }).fail(function (error) {
+          // Handle error response
+          console.error("Error sending message:", error);
+          alert("Failed to send message. Please try again.");
+        });
+      });
+    });
+  </script>
+</html>

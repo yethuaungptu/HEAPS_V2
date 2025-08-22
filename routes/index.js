@@ -2,7 +2,8 @@ var express = require("express");
 var router = express.Router();
 var University = require("../models/University");
 var Student = require("../models/Student");
-var moment = require("moment-timezone");
+var User = require("../models/User");
+var Feedback = require("../models/Feedback");
 
 // Data Mining Functions
 function calculatePredictionPercentage(student, university) {
@@ -89,6 +90,69 @@ router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
 });
 
+router.get("/register", function (req, res) {
+  res.render("register", { title: "User Registration" });
+});
+
+router.post("/register", async (req, res, next) => {
+  try {
+    const exitingUser = await User.findOne({ email: req.body.email });
+    if (exitingUser) {
+      res.json({ status: false, message: "Exit user with this email" });
+      return;
+    }
+    const user = new User();
+    user.name = req.body.name;
+    user.email = req.body.email;
+    user.password = req.body.password;
+    await user.save();
+    res.json({ status: true, message: "User registered successfully" });
+  } catch (error) {
+    console.error("Error during registration:", error);
+    res.json({ status: false, message: "Registration failed" });
+  }
+});
+
+router.get("/login", function (req, res) {
+  res.render("login", { title: "User Login" });
+});
+
+router.post("/login", async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (user != null && User.compare(req.body.password, user.password)) {
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+    res.json({ status: true, message: "Login successful" });
+  } else {
+    res.json({
+      status: false,
+      message: "Email not found or password not match",
+    });
+  }
+});
+
+router.get("/adminLogin", function (req, res) {
+  res.render("alogin");
+});
+
+router.post("/adminLogin", function (req, res) {
+  if (
+    req.body.email === "heap@admin.com" &&
+    req.body.password === "heapadmin2025"
+  ) {
+    req.session.admin = {
+      email: req.body.email,
+    };
+    res.redirect("/admin");
+  } else {
+    res.redirect("/adminLogin?error=Invalid credentials");
+  }
+});
+
 router.get("/prediction", function (req, res, next) {
   res.render("predict", { title: "Prediction" });
 });
@@ -154,6 +218,13 @@ router.get("/university/:id", async (req, res) => {
     console.error("Error fetching university detail:", error);
     res.redirect("/university");
   }
+});
+
+router.get("/feedback", async function (req, res) {
+  const feedbackList = await Feedback.find()
+    .populate("user")
+    .sort({ createdAt: -1 });
+  res.render("feedback", { feedbackList: feedbackList });
 });
 
 module.exports = router;

@@ -1,7 +1,9 @@
 <footer
   class="footer footer-horizontal footer-center bg-primary text-white rounded p-5 lg:p-10"
 >
-  <nav class="grid grid-cols-3 gap-2">
+  <nav
+    class="grid grid-cols-3 <%= (locals.user)? 'md:grid-cols-6':'md:grid-cols-4' %> gap-2"
+  >
     <a href="/" class="link link-hover"><%= __('nav.home') %></a>
     <a href="/university" class="link link-hover"
       ><%= __('nav.university') %></a
@@ -9,6 +11,13 @@
     <a href="/prediction" class="link link-hover"
       ><%= __('nav.prediction') %></a
     >
+    <% if(locals.user){%>
+    <a href="/user" class="link link-hover"><%= __('nav.profile') %></a>
+    <a href="/user/ticket/create" class="link link-hover"
+      ><%= __('nav.ticket') %></a
+    >
+    <%}%>
+    <a href="/feedback" class="link link-hover"><%= __('nav.feedback') %></a>
   </nav>
   <nav>
     <div class="grid grid-flow-col gap-4">

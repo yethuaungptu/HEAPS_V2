@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html data-theme="winter">
+  <head>
+    <title>Higher Education Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/aos.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <% include ./partial/navbar.ejs %>
+    <div class="aos-all">
+      <div class="text-3xl text-center mt-3 text-primary">Feedback</div>
+      <div class="max-w-4xl mx-auto p-6 bg-base-200 min-h-screen">
+        <!-- Feedback Form -->
+        <% if(locals.user){%>
+        <form
+          action="/user/feedback"
+          method="post"
+          class="bg-base-100 p-6 shadow-lg rounded-lg mb-8"
+        >
+          <h2 class="text-2xl font-bold mb-4">Give Us Your Feedback</h2>
+
+          <!-- Rating -->
+          <div class="form-control mb-4">
+            <label class="label">
+              <span class="label-text font-semibold">Rating</span>
+            </label>
+            <br />
+            <div class="rating rating-lg">
+              <input
+                type="radio"
+                name="rating"
+                value="1"
+                class="mask mask-star-2 bg-yellow-400"
+                required
+              />
+              <input
+                type="radio"
+                name="rating"
+                value="2"
+                class="mask mask-star-2 bg-yellow-400"
+              />
+              <input
+                type="radio"
+                name="rating"
+                value="3"
+                class="mask mask-star-2 bg-yellow-400"
+              />
+              <input
+                type="radio"
+                name="rating"
+                value="4"
+                class="mask mask-star-2 bg-yellow-400"
+              />
+              <input
+                type="radio"
+                name="rating"
+                value="5"
+                class="mask mask-star-2 bg-yellow-400"
+              />
+            </div>
+            <!-- <select
+              name="rating"
+              class="select select-bordered w-full"
+              required
+            >
+              <option value="" disabled selected>Choose a rating</option>
+              <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+              <option value="4">⭐⭐⭐⭐ - Good</option>
+              <option value="3">⭐⭐⭐ - Average</option>
+              <option value="2">⭐⭐ - Poor</option>
+              <option value="1">⭐ - Very Bad</option>
+            </select> -->
+          </div>
+
+          <!-- Feedback Text -->
+          <div class="form-control mb-4">
+            <label class="label">
+              <span class="label-text font-semibold">Your Feedback</span>
+            </label>
+            <textarea
+              name="feedbackText"
+              class="textarea textarea-bordered w-full"
+              placeholder="Write your feedback here..."
+              rows="4"
+              required
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-control">
+            <button type="submit" class="btn btn-primary w-full">
+              Submit Feedback
+            </button>
+          </div>
+        </form>
+        <% } else { %>
+        <!-- Not Logged In Message -->
+        <div class="bg-base-100 p-6 shadow-lg rounded-lg text-center mb-8">
+          <h2 class="text-xl font-bold mb-4">Please Log In to Give Feedback</h2>
+          <a href="/login" class="btn btn-secondary">Login</a>
+        </div>
+        <% } %>
+        <!-- Feedback List -->
+        <div class="bg-base-100 p-6 shadow-lg rounded-lg">
+          <h2 class="text-xl font-bold mb-4">Previous Feedback</h2>
+
+          <div class="space-y-4">
+            <% if (feedbackList && feedbackList.length > 0) { %> <%
+            feedbackList.forEach(function(fb) { %>
+            <div class="card bg-base-200 shadow-md">
+              <div class="card-body p-4">
+                <div class="flex items-center justify-between">
+                  <div class="text-yellow-500">
+                    <% for (let i = 0; i < fb.rating; i++) { %>⭐<% } %>
+                  </div>
+                  <div class="text-sm text-gray-500">
+                    <%= new Date(fb.createdAt).toLocaleDateString() %>
+                  </div>
+                </div>
+                <p class="mt-2"><%= fb.feedbackText %></p>
+                <p class="mt-1 text-sm text-gray-400">
+                  By: <%= fb.user.name || 'Anonymous' %>
+                </p>
+              </div>
+            </div>
+            <% }) %> <% } else { %>
+            <p class="text-gray-500">
+              No feedback yet. Be the first to leave one!
+            </p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% include ./partial/footer.ejs %>
+  </body>
+  <script src="/javascripts/aos.js"></script>
+  <script>
+    AOS.init({
+      mirror: true,
+    });
+  </script>
+</html>

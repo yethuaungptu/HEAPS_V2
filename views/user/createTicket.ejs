@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html data-theme="winter">
+  <head>
+    <title>Higher Education Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/aos.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <% include ../partial/navbar.ejs %>
+    <!-- <div class="aos-all"> -->
+    <div class="text-3xl text-center mt-3 text-primary">Question Ticket</div>
+    <div class="container mx-auto px-4 py-6">
+      <!-- Profile Card -->
+      <div class="card w-full max-w-2xl bg-base-100 shadow-xl mx-auto">
+        <div class="card-body">
+          <h2 class="card-title text-2xl">🎟 Create New Ticket</h2>
+          <p class="text-sm text-gray-500 mb-4">
+            Fill in the details below to submit your question.
+          </p>
+
+          <!-- Ticket Form -->
+          <form class="space-y-4" action="/user/ticket/create" method="post">
+            <!-- Title -->
+            <div>
+              <label class="label">
+                <span class="label-text">Title</span>
+              </label>
+              <input
+                type="text"
+                name="title"
+                placeholder="Short title for your issue"
+                class="input input-bordered w-full"
+                required
+              />
+            </div>
+
+            <!-- Question -->
+            <div>
+              <label class="label">
+                <span class="label-text">Question</span>
+              </label>
+              <textarea
+                class="textarea textarea-bordered w-full"
+                placeholder="Describe your issue in detail..."
+                rows="4"
+                name="question"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Priority -->
+            <div>
+              <label class="label">
+                <span class="label-text">Priority</span>
+              </label>
+              <select
+                name="priority"
+                class="select select-bordered w-full"
+                required
+              >
+                <option disabled selected>Select priority</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+
+            <!-- Submit -->
+            <div class="flex justify-end">
+              <button type="submit" class="btn btn-primary">
+                Submit Ticket
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- </div> -->
+    <% include ../partial/footer.ejs %>
+  </body>
+  <script src="/javascripts/aos.js"></script>
+  <script>
+    AOS.init({
+      mirror: true,
+    });
+  </script>
+</html>

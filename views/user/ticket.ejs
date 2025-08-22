@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html data-theme="winter">
+  <head>
+    <title>Higher Education Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link rel="stylesheet" href="/stylesheets/aos.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <% include ../partial/navbar.ejs %>
+    <!-- <div class="aos-all"> -->
+    <div class="max-w-4xl mx-auto">
+      <!-- Ticket Header -->
+      <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+          <h2 class="card-title text-2xl"><%= ticket.title %></h2>
+          <p class="text-gray-600"><%= ticket.question %></p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
+            <span class="badge badge-primary"><%= ticket.status %></span>
+            <span class="badge badge-error"
+              ><%= ticket.priority %> Priority</span
+            >
+            <span class="badge badge-info"
+              >Asked by: <%= ticket.author.name %></span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Conversation Panel -->
+      <div class="card bg-base-100 shadow-xl mb-6">
+        <div class="card-body">
+          <h3 class="text-lg font-semibold mb-4">Conversation</h3>
+
+          <div class="space-y-4 max-h-96 overflow-y-auto pr-2">
+            <% for (var i = 0; i < ticket.answers.length; i++) { %> <% if
+            (!ticket.answers[i].isAuthor ) { %>
+            <!-- User Message -->
+            <div class="chat chat-start">
+              <div class="chat-header">
+                Admin
+                <time class="text-xs opacity-50"
+                  ><%= ticket.answers[i].createdAt %></time
+                >
+              </div>
+              <div class="chat-bubble chat-bubble-primary">
+                <%= ticket.answers[i].message %>
+              </div>
+            </div>
+            <% } else { %>
+            <!-- Admin Answer -->
+            <div class="chat chat-end">
+              <div class="chat-header">
+                <%= ticket.author.name %>
+                <time class="text-xs opacity-50"
+                  ><%= ticket.answers[i].createdAt %></time
+                >
+              </div>
+              <div class="chat-bubble chat-bubble-accent">
+                <%= ticket.answers[i].message %>
+              </div>
+            </div>
+            <%}%> <%}%>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message Input Box -->
+      <% if(ticket.status == 'open' || ticket.status == 'pending'){ %>
+      <div class="card bg-base-100 shadow-xl mb-3">
+        <div class="card-body">
+          <h3 class="text-lg font-semibold mb-2">Send a Message</h3>
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="messageInput"
+              placeholder="Type your message..."
+              class="input input-bordered flex-1"
+            />
+            <button class="btn btn-primary" id="btnSend">Send</button>
+          </div>
+        </div>
+      </div>
+      <%}%>
+      <div class="flex my-3">
+        <% if(ticket.status == 'open' || ticket.status == 'pending'){ %>
+        <button
+          class="btn btn-primary w-full"
+          onclick="changeTicket('resolved')"
+        >
+          Ticket is resolved
+        </button>
+        <% } else if(ticket.status == 'resolved') { %>
+        <button
+          class="btn btn-secondary w-full"
+          onclick="changeTicket('closed')"
+        >
+          Close Ticket
+        </button>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- </div> -->
+    <% include ../partial/footer.ejs %>
+  </body>
+  <script src="/javascripts/jquery-3.7.1.min.js"></script>
+  <script>
+    function changeTicket(status) {
+      $.ajax({
+        url: "/user/ticket/changeStatus", // Adjust the URL as needed
+        method: "POST",
+        data: {
+          ticketId: "<%= ticket._id %>", // Pass the ticket ID
+          status: status,
+        },
+        success: function (response) {
+          // Handle success response
+          if (response.status !== "success") {
+            alert("Failed to change ticket status: " + response.message);
+            return;
+          }
+          location.reload(); // Reload to show the updated status
+          console.log("Ticket status changed successfully:", response);
+        },
+      }).fail(function (error) {
+        // Handle error response
+        console.error("Error changing ticket status:", error);
+        alert("Failed to change ticket status. Please try again.");
+      });
+    }
+    $(document).ready(function () {
+      $("#btnSend").click(function () {
+        const message = $("#messageInput").val();
+        if (message.trim() === "") {
+          alert("Please enter a message.");
+          return;
+        }
+        // Here you would typically send the message to the server
+        $.ajax({
+          url: "/user/ticket/sendMessage", // Adjust the URL as needed
+          method: "POST",
+          data: {
+            ticketId: "<%= ticket._id %>", // Pass the ticket ID
+            message: message,
+          },
+          success: function (response) {
+            // Handle success response
+            if (response.status !== "success") {
+              alert("Failed to send message: " + response.message);
+              return;
+            }
+            location.reload(); // Reload to show the new message
+            console.log("Message sent successfully:", response);
+            // Optionally, you can append the new message to the chat
+          },
+        }).fail(function (error) {
+          // Handle error response
+          console.error("Error sending message:", error);
+          alert("Failed to send message. Please try again.");
+        });
+      });
+    });
+  </script>
+  <script src="/javascripts/aos.js"></script>
+  <script>
+    AOS.init({
+      mirror: true,
+    });
+  </script>
+</html>

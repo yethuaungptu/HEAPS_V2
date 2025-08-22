@@ -6,8 +6,10 @@ const fs = require("fs");
 const Student = require("../models/Student"); // Assuming you have a Student model defined
 const University = require("../models/University");
 const moment = require("moment-timezone");
+const Ticket = require("../models/Ticket");
 const upload = multer({ dest: "public/uploads/" });
 const uploadImage = multer({ dest: "public/images/uploads" });
+const Feedback = require("../models/Feedback");
 
 function convertMyanmarNumeral(myanmarNum) {
   const myanmarNumerals = {
@@ -33,17 +35,40 @@ function convertMyanmarNumeral(myanmarNum) {
   return parseInt(converted) || 0;
 }
 
+const checkAdmin = function (req, res, next) {
+  if (req.session.admin) {
+    next();
+  } else {
+    res.redirect("/adminLogin?error=Please login");
+  }
+};
+
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("admin/index", { title: "Express" });
+router.get("/", checkAdmin, async function (req, res, next) {
+  const studentCount = await Student.countDocuments();
+  const universityCount = await University.countDocuments();
+  const ticketCount = await Ticket.countDocuments({
+    status: { $in: ["open", "pending"] },
+  });
+  const feedbackCount = await Feedback.countDocuments();
+  const recentTicket = await Ticket.find({}).sort({ updatedAt: -1 }).limit(5);
+  res.render("admin/index", {
+    title: "Express",
+    studentCount: studentCount,
+    universityCount: universityCount,
+    ticketCount: ticketCount,
+    feedbackCount: feedbackCount,
+    recentTicket: recentTicket,
+  });
 });
 
-router.get("/student/create", function (req, res, next) {
+router.get("/student/create", checkAdmin, function (req, res, next) {
   res.render("admin/student/create", { title: "Express" });
 });
 
 router.post(
   "/student/upload",
+  checkAdmin,
   upload.single("csvFile"),
   function (req, res, next) {
     const results = [];
@@ -121,11 +146,11 @@ router.post(
   }
 );
 
-router.get("/student/", function (req, res, next) {
+router.get("/student/", checkAdmin, function (req, res, next) {
   res.render("admin/student/index", { title: "Express" });
 });
 
-router.get("/api/students", async (req, res) => {
+router.get("/api/students", checkAdmin, async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -175,7 +200,7 @@ router.get("/api/students", async (req, res) => {
   }
 });
 
-router.get("/university", async function (req, res) {
+router.get("/university", checkAdmin, async function (req, res) {
   var query = {};
   var filterValue = "";
   if (req.query.search) {
@@ -190,12 +215,13 @@ router.get("/university", async function (req, res) {
   });
 });
 
-router.get("/university/create", function (req, res) {
+router.get("/university/create", checkAdmin, function (req, res) {
   res.render("admin/university/create", { title: "University Management" });
 });
 
 router.post(
   "/university/create",
+  checkAdmin,
   uploadImage.single("image"),
   async (req, res) => {
     try {
@@ -224,7 +250,7 @@ router.post(
   }
 );
 
-router.get("/university/detail/:id", async (req, res) => {
+router.get("/university/detail/:id", checkAdmin, async (req, res) => {
   try {
     const university = await University.findById(req.params.id);
     if (!university) {
@@ -240,7 +266,7 @@ router.get("/university/detail/:id", async (req, res) => {
   }
 });
 
-router.get("/university/update/:id", async (req, res) => {
+router.get("/university/update/:id", checkAdmin, async (req, res) => {
   try {
     const university = await University.findById(req.params.id);
     if (!university) {
@@ -257,6 +283,7 @@ router.get("/university/update/:id", async (req, res) => {
 
 router.post(
   "/university/update",
+  checkAdmin,
   uploadImage.single("image"),
   async (req, res) => {
     try {
@@ -285,5 +312,89 @@ router.post(
     }
   }
 );
+
+router.get("/ticket", checkAdmin, async function (req, res) {
+  var query = {};
+  var filterValue = "";
+  if (req.query.priority) {
+    filterValue = req.query.priority;
+    query = { priority: filterValue };
+  }
+  console.log("Query:", req.query);
+  const tickets = await Ticket.find(query)
+    .populate("author")
+    .sort({ updatedAt: -1 });
+  res.render("admin/ticket/index", {
+    title: "Tickets Management",
+    tickets: tickets,
+    filterValue: filterValue,
+  });
+});
+
+router.get("/ticket/detail/:id", checkAdmin, async (req, res) => {
+  try {
+    const ticket = await Ticket.findById(req.params.id).populate("author");
+    if (!ticket) {
+      return res.redirect("/admin/ticket");
+    }
+    res.render("admin/ticket/detail", {
+      title: "Ticket Detail",
+      ticket: ticket,
+    });
+  } catch (error) {
+    console.error("Error fetching ticket detail:", error);
+    res.redirect("/admin/ticket");
+  }
+});
+
+router.post("/ticket/sendMessage", checkAdmin, async (req, res) => {
+  try {
+    const ticket = await Ticket.findByIdAndUpdate(
+      req.body.ticketId,
+      {
+        $push: {
+          answers: {
+            isAuthor: false,
+            message: req.body.message,
+            createdAt: moment.utc(Date.now()).tz("Asia/Yangon").format(),
+          },
+        },
+        updatedAt: moment.utc(Date.now()).tz("Asia/Yangon").format(),
+      },
+      { new: true }
+    );
+    if (!ticket) {
+      return res.json({ error: "Ticket not found", status: "error" });
+    }
+    res.json({
+      status: "success",
+      message: "Message sent successfully",
+    });
+  } catch (error) {
+    console.error("Error sending message:", error);
+    res.json({ status: "error", error: "Failed to send message" });
+  }
+});
+
+router.get("/feedback", checkAdmin, async function (req, res, next) {
+  const feedbacks = await Feedback.find({})
+    .sort({ createdAt: -1 })
+    .populate("user", "name");
+  res.render("admin/feedback", { feedbacks: feedbacks });
+});
+
+router.post("/feedback/delete", checkAdmin, async function (req, res, next) {
+  try {
+    await Feedback.findByIdAndDelete(req.body.id);
+    res.json({ status: true });
+  } catch (e) {
+    res.json({ status: false });
+  }
+});
+
+router.get("/logout", checkAdmin, async function (req, res, next) {
+  req.session.destroy();
+  res.redirect("/");
+});
 
 module.exports = router;

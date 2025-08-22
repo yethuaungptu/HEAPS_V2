@@ -17,7 +17,7 @@
           />
         </svg>
       </button>
-      <a href="/" class="btn btn-ghost text-xl text-white lg:hidden">HEAPS</a>
+      <a href="/" class="btn btn-ghost text-xl text-white lg:hidden">HEAP</a>
       <ul
         tabindex="0"
         class="menu menu-sm dropdown-content text-white-500 bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
@@ -25,12 +25,12 @@
         <li><a href="/"><%= __('nav.home') %></a></li>
         <li><a href="/university"><%= __('nav.university') %></a></li>
         <li><a href="/prediction"><%= __('nav.prediction') %></a></li>
-        <li><a href="/askQuestion"><%= __('nav.askQuestion') %></a></li>
         
       <% if(locals.user){%>
         <li><a href="/user"><%= __('nav.profile') %></a></li>
-        <!-- <li><a href="/quiz"><%= __('nav.quiz') %></a></li> -->
+        <li><a href="/user/ticket/create"><%= __('nav.ticket') %></a></li>
       <%}%>
+      <li><a href="/feedback"><%= __('nav.feedback') %></a></li>
         <li>
           <a href="<%= locals.lang == 'en'? '/?lang=mm':'/?lang=en' %>">
             <%= __('nav.lang') %>
@@ -40,7 +40,7 @@
       
     </div>
     <a href="/" class="btn btn-ghost btn-primary text-2xl hidden lg:flex text-white"
-        >Higher Eduction Access Prediction System
+        >Higher Education Access Prediction
       </a>
   </div>
   <div class="navbar-center hidden lg:flex">
@@ -48,12 +48,12 @@
       <li><a href="/"><%= __('nav.home') %></a></li>
       <li><a href="/university"><%= __('nav.university') %></a></li>
       <li><a href="/prediction"><%= __('nav.prediction') %></a></li>
-      <li><a href="/askQuestion"><%= __('nav.askQuestion') %></a></li>
        
       <% if(locals.user){%>
         <li><a href="/user"><%= __('nav.profile') %></a></li>
-        <!-- <li><a href="/quiz"><%= __('nav.quiz') %></a></li> -->
+        <li><a href="/user/ticket/create"><%= __('nav.ticket') %></a></li>
       <%}%>
+      <li><a href="/feedback"><%= __('nav.feedback') %></a></li>
       <li>
         <a href="<%= locals.lang == 'en'? '/?lang=mm':'/?lang=en' %>">
           <%= __('nav.lang') %>

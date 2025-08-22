@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html data-theme="winter">
+  <head>
+    <title>Higher Education Access Prediction System</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div id="root">
+      <div class="drawer lg:drawer-open">
+        <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col">
+          <div class="navbar sticky top-0 bg-base-100 z-10 shadow-md">
+            <div class="flex-1">
+              <label
+                for="left-sidebar-drawer"
+                class="btn btn-primary drawer-button lg:hidden"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                  class="h-5 inline-block w-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  ></path>
+                </svg>
+              </label>
+              <h1 class="text-2xl font-semibold ml-2"></h1>
+            </div>
+          </div>
+          <main class="flex-1 overflow-y-auto md:pt-4 pt-4 px-6 bg-base-200">
+            <div class="text-2xl text-center my-2">User Feedback</div>
+            <div class="card border border-base-300 shadow-2xl">
+              <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                  <!-- head -->
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>User</th>
+                      <th>Rating</th>
+                      <th>Text</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i = 0; i < feedbacks.length;i++){%>
+                    <tr>
+                      <th><%= i+1 %></th>
+                      <td><%= feedbacks[i].user.name %></td>
+                      <td><%= feedbacks[i].rating %></td>
+                      <td><%= feedbacks[i].feedbackText %></td>
+                      <td>
+                        <button
+                          class="btn btn-error btn-sm"
+                          onclick="deleteFeedback('<%= feedbacks[i]._id %>')"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                    <%}%>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="h-16"></div>
+          </main>
+        </div>
+        <% include ../partial/adminDrawer %>
+      </div>
+    </div>
+  </body>
+  <script src="/javascripts/jquery-3.7.1.min.js"></script>
+  <script>
+    function deleteFeedback(id) {
+      if (!confirm("Are you sure for delete?")) return;
+      $.ajax({
+        url: "/admin/feedback/delete",
+        type: "POST",
+        data: { id: id }, // Send serialized data
+        success: function (result) {
+          if (result.status) {
+            location.reload();
+          } else {
+            alert("Somethings was wrong");
+          }
+        },
+        error: function (error) {
+          console.error("Error:", error);
+        },
+      });
+    }
+  </script>
+</html>
