@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="retro">
+<html data-theme="HEAP">
   <head>
     <title>Higher Education Access Prediction System</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
@@ -8,40 +8,19 @@
   </head>
   <body>
     <div id="root">
-      <div class="drawer lg:drawer-open">
+      <div class="drawer">
         <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col">
-          <div class="navbar sticky top-0 bg-base-100 z-10 shadow-md">
-            <div class="flex-1">
-              <label
-                for="left-sidebar-drawer"
-                class="btn btn-primary drawer-button lg:hidden"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                  class="h-5 inline-block w-5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  ></path>
-                </svg>
-              </label>
-              <h1 class="text-2xl font-semibold ml-2"></h1>
-            </div>
-          </div>
-          <main class="flex-1 overflow-y-auto md:pt-4 pt-4 px-6 bg-base-200">
-            <section class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              <!-- Students -->
+          <% include ../partial/adminNav %>
+          <main class="flex-1 overflow-y-auto">
+            <img
+              src="/images/CU.jpg"
+              class="object-cover w-screen h-screen"
+              alt=""
+            />
+            <!-- <section class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               <div class="stat bg-base-100 rounded-2xl shadow">
                 <div class="stat-figure text-primary">
-                  <!-- user-group icon -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-8 w-8"
@@ -60,10 +39,8 @@
                 <div class="stat-desc">Total Student</div>
               </div>
 
-              <!-- Universities -->
               <div class="stat bg-base-100 rounded-2xl shadow">
                 <div class="stat-figure text-warning">
-                  <!-- academic-cap icon -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-8 w-8"
@@ -83,10 +60,8 @@
                 <div class="stat-desc">Total University</div>
               </div>
 
-              <!-- Tickets -->
               <div class="stat bg-base-100 rounded-2xl shadow">
                 <div class="stat-figure text-info">
-                  <!-- ticket icon -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-8 w-8"
@@ -105,10 +80,8 @@
                 <div class="stat-desc">Open & pending</div>
               </div>
 
-              <!-- Feedback -->
               <div class="stat bg-base-100 rounded-2xl shadow">
                 <div class="stat-figure text-success">
-                  <!-- chat-bubble icon -->
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-8 w-8"
@@ -126,10 +99,10 @@
                 </div>
                 <div class="stat-desc">Feedback from user</div>
               </div>
-            </section>
+            </section> -->
 
             <!-- Quick actions / table placeholder -->
-            <section class="mt-6 grid gap-6 lg:grid-cols-3">
+            <!-- <section class="mt-6 grid gap-6 lg:grid-cols-3">
               <div class="card bg-base-100 shadow lg:col-span-2">
                 <div class="card-body">
                   <h2 class="card-title">Recent Tickets</h2>
@@ -204,7 +177,7 @@
                   </div>
                 </div>
               </div>
-            </section>
+            </section> -->
           </main>
         </div>
         <% include ../partial/adminDrawer %>

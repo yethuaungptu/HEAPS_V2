@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="retro">
+<html data-theme="HEAP">
   <head>
     <title>Higher Education Access Prediction System</title>
     <link rel="stylesheet" href="/stylesheets/style.css" />
@@ -8,34 +8,10 @@
   </head>
   <body>
     <div id="root">
-      <div class="drawer lg:drawer-open">
+      <div class="drawer">
         <input id="left-sidebar-drawer" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col">
-          <div class="navbar sticky top-0 bg-base-100 z-10 shadow-md">
-            <div class="flex-1">
-              <label
-                for="left-sidebar-drawer"
-                class="btn btn-primary drawer-button lg:hidden"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                  class="h-5 inline-block w-5"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  ></path>
-                </svg>
-              </label>
-              <h1 class="text-2xl font-semibold ml-2"></h1>
-            </div>
-          </div>
+          <% include ../../partial/adminNav %>
           <main class="flex-1 overflow-y-auto md:pt-4 pt-4 px-6 bg-base-200">
             <div class="container mx-auto p-6">
               <h1 class="text-4xl font-bold text-center mb-8">Students List</h1>
@@ -54,9 +30,9 @@
 
                     <select id="categoryFilter" class="select select-bordered">
                       <option value="">All Categories</option>
-                      <option value="A">Group A</option>
-                      <option value="B">Group B</option>
-                      <option value="C">Group C</option>
+                      <option value="A">Bio</option>
+                      <option value="B">Eco</option>
+                      <option value="C">ဝိဇ္ဇာ</option>
                     </select>
 
                     <select id="statusFilter" class="select select-bordered">
@@ -279,8 +255,12 @@
                     <td class="font-mono">${myanmarRollNo}</td>
                     <td class="font-semibold">${student.name}</td>
                     <td>${student.regionalCode}</td>
-                    <td><span class="badge badge-outline">Group ${
-                      student.category
+                    <td><span class="badge badge-outline">${
+                      student.category === "A"
+                        ? "Bio"
+                        : student.category === "B"
+                        ? "Eco"
+                        : "ဝိဇ္ဇာ"
                     }</span></td>
                     <td>${student.gender}</td>
                     <td class="font-mono">${student.totalMark}</td>
@@ -404,8 +384,12 @@
                                 <p><span class="font-semibold my-2">Gender: </span> ${
                                   student.gender
                                 }</p>
-                                <p><span class="font-semibold my-2">Category: </span> Group ${
-                                  student.category
+                                <p><span class="font-semibold my-2">Category: </span> ${
+                                  student.category === "A"
+                                    ? "Bio"
+                                    : student.category === "B"
+                                    ? "Eco"
+                                    : "ဝိဇ္ဇာ"
                                 }</p>
                                 <p><span class="font-semibold my-2">Status: </span> 
                                     <span class="badge ${
